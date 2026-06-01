@@ -234,7 +234,7 @@
 
   <script>
     const loginForm = document.getElementById('loginForm');
-    const message = document.getElementById('loginMessage');
+    const message = document.getElementById('message');
     const loginScreen = document.getElementById('loginScreen');
     const dashboard = document.getElementById('dashboard');
 
@@ -248,7 +248,7 @@
       const password = document.getElementById('password').value;
       const rememberMe = document.getElementById('rememberMe').checked;
 
-      if (username = DEMO_USERNAME && password === DEMO_PASSWORD) {
+      if (username === DEMO_USERNAME && password === DEMO_PASSWORD) {
         message.textContent = 'Login successful.';
         message.className = 'message success';
 
