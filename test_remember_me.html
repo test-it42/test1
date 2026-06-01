@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Remember Me Bug Test</title>
+</head>
+<body>
+  <script>
+    // Simulate the buggy behavior
+    console.log('Testing Remember Me bug...');
+
+    // Simulate what happens when "Remember Me" is checked
+    localStorage.setItem('it42_logged_in', 'true');
+
+    // Simulate what the page load event checks (the buggy code)
+    const buggyCheck = localStorage.getItem('it42_logged_in') === true;
+    console.log('Buggy check result:', buggyCheck);
+    console.log('localStorage value:', localStorage.getItem('it42_logged_in'));
+    console.log('Type of stored value:', typeof localStorage.getItem('it42_logged_in'));
+    console.log('Expected: true, Got:', buggyCheck);
+
+    if (!buggyCheck) {
+      console.log('FAIL: User should be logged in but is not!');
+    } else {
+      console.log('PASS: User is logged in');
+    }
+
+    // Test the fix
+    const fixedCheck = localStorage.getItem('it42_logged_in') === 'true';
+    console.log('\nFixed check result:', fixedCheck);
+    if (fixedCheck) {
+      console.log('PASS: Fixed version works correctly');
+    }
+
+    localStorage.clear();
+  </script>
+</body>
+</html>
