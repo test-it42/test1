@@ -285,8 +285,8 @@
     }
 
     window.addEventListener('load', function () {
-      const isLoggedIn = localStorage.getItem('it42_logged_in') === true ||
-                         sessionStorage.getItem('it42_logged_in') === true;
+      const isLoggedIn = localStorage.getItem('it42_logged_in') === 'true' ||
+                         sessionStorage.getItem('it42_logged_in') === 'true';
 
       if (isLoggedIn) {
         showDashboard();
