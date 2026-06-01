@@ -1,0 +1,9 @@
+[build-system]
+requires = ["setuptools>=42"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "test1"
+version = "0.1.0"
+description = "IT42 test1 tools repository"
+requires-python = ">=3.8"
