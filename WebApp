@@ -1,0 +1,297 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>IT42 Login App - Debug Challenge</title>
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: Arial, Helvetica, sans-serif;
+    }
+
+    body {
+      min-height: 100vh;
+      background: linear-gradient(135deg, #111827, #1f2937, #0f172a);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #111827;
+    }
+
+    .app-container {
+      width: 100%;
+      max-width: 420px;
+      padding: 20px;
+    }
+
+    .card {
+      background: #ffffff;
+      border-radius: 18px;
+      padding: 32px;
+      box-shadow: 0 25px 60px rgba(0, 0, 0, 0.35);
+    }
+
+    .logo {
+      width: 54px;
+      height: 54px;
+      border-radius: 14px;
+      background: #111827;
+      color: #ffffff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 700;
+      font-size: 18px;
+      margin-bottom: 22px;
+    }
+
+    h1 {
+      font-size: 26px;
+      margin-bottom: 8px;
+    }
+
+    .subtitle {
+      color: #6b7280;
+      font-size: 14px;
+      margin-bottom: 28px;
+      line-height: 1.5;
+    }
+
+    .form-group {
+      margin-bottom: 18px;
+    }
+
+    label {
+      display: block;
+      font-size: 13px;
+      font-weight: 600;
+      margin-bottom: 7px;
+      color: #374151;
+    }
+
+    input {
+      width: 100%;
+      padding: 13px 14px;
+      border: 1px solid #d1d5db;
+      border-radius: 10px;
+      font-size: 15px;
+      outline: none;
+      transition: border 0.2s, box-shadow 0.2s;
+    }
+
+    input:focus {
+      border-color: #2563eb;
+      box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.15);
+    }
+
+    .row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 22px;
+      font-size: 13px;
+    }
+
+    .remember {
+      display: flex;
+      align-items: center;
+      gap: 7px;
+      color: #4b5563;
+    }
+
+    .remember input {
+      width: auto;
+    }
+
+    .link {
+      color: #2563eb;
+      text-decoration: none;
+      cursor: pointer;
+    }
+
+    .link:hover {
+      text-decoration: underline;
+    }
+
+    button {
+      width: 100%;
+      border: none;
+      background: #111827;
+      color: #ffffff;
+      padding: 14px;
+      border-radius: 10px;
+      font-size: 15px;
+      font-weight: 700;
+      cursor: pointer;
+      transition: background 0.2s, transform 0.1s;
+    }
+
+    button:hover {
+      background: #1f2937;
+    }
+
+    button:active {
+      transform: scale(0.99);
+    }
+
+    .message {
+      margin-top: 16px;
+      font-size: 14px;
+      text-align: center;
+      min-height: 20px;
+    }
+
+    .error {
+      color: #dc2626;
+    }
+
+    .success {
+      color: #16a34a;
+    }
+
+    .dashboard {
+      display: none;
+      text-align: center;
+    }
+
+    .dashboard h2 {
+      font-size: 24px;
+      margin-bottom: 10px;
+    }
+
+    .dashboard p {
+      color: #6b7280;
+      line-height: 1.5;
+      margin-bottom: 24px;
+    }
+
+    .logout-btn {
+      background: #dc2626;
+    }
+
+    .logout-btn:hover {
+      background: #b91c1c;
+    }
+
+    .hint {
+      margin-top: 18px;
+      font-size: 12px;
+      color: #6b7280;
+      text-align: center;
+      line-height: 1.5;
+    }
+  </style>
+</head>
+<body>
+  <div class="app-container">
+    <div class="card">
+      <div id="loginScreen">
+        <div class="logo">IT42</div>
+        <h1>Sign in</h1>
+        <p class="subtitle">Access the administration dashboard.</p>
+
+        <form id="loginForm">
+          <div class="form-group">
+            <label for="username">Username</label>
+            <input type="text" id="username" placeholder="Enter username" autocomplete="username" required />
+          </div>
+
+          <div class="form-group">
+            <label for="password">Password</label>
+            <input type="password" id="password" placeholder="Enter password" autocomplete="current-password" required />
+          </div>
+
+          <div class="row">
+            <label class="remember">
+              <input type="checkbox" id="rememberMe" />
+              Remember me
+            </label>
+            <a class="link" onclick="showForgotPassword()">Forgot password?</a>
+          </div>
+
+          <button type="submit">Login</button>
+          <div id="message" class="message"></div>
+        </form>
+
+        <div class="hint">
+          Demo login:<br />
+          Username: <strong>admin</strong><br />
+          Password: <strong>admin123</strong>
+        </div>
+      </div>
+
+      <div id="dashboard" class="dashboard">
+        <div class="logo" style="margin-left: auto; margin-right: auto;">IT42</div>
+        <h2>Welcome</h2>
+        <p>You are now logged in to the demo dashboard.</p>
+        <button class="logout-btn" onclick="logout()">Logout</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const loginForm = document.getElementById('loginForm');
+    const message = document.getElementById('loginMessage');
+    const loginScreen = document.getElementById('loginScreen');
+    const dashboard = document.getElementById('dashboard');
+
+    const DEMO_USERNAME = 'admin';
+    const DEMO_PASSWORD = 'admin123';
+
+    loginForm.addEventListener('submit', function (event) {
+      event.preventDefault();
+
+      const username = document.getElementById('username').value;
+      const password = document.getElementById('password').value;
+      const rememberMe = document.getElementById('rememberMe').checked;
+
+      if (username = DEMO_USERNAME && password === DEMO_PASSWORD) {
+        message.textContent = 'Login successful.';
+        message.className = 'message success';
+
+        if (rememberMe) {
+          localStorage.setItem('it42_logged_in', 'true');
+        } else {
+          sessionStorage.setItem('it42_logged_in', 'true');
+        }
+
+        setTimeout(showDashboard, 400);
+      } else {
+        message.textContent = 'Invalid username or password.';
+        message.className = 'message error';
+      }
+    });
+
+    function showDashboard() {
+      loginScreen.style.display = 'none';
+      dashboard.style.display = 'block';
+    }
+
+    function logout() {
+      localStorage.removeItem('it42_logged_in');
+      sessionStorage.removeItem('it42_logged_in');
+      dashboard.style.display = 'none';
+      loginScreen.style.display = 'block';
+      loginForm.reset();
+      message.textContent = '';
+    }
+
+    function showForgotPassword() {
+      message.textContent = 'Password reset is not configured in this demo.';
+      message.className = 'message error';
+    }
+
+    window.addEventListener('load', function () {
+      const isLoggedIn = localStorage.getItem('it42_logged_in') === true ||
+                         sessionStorage.getItem('it42_logged_in') === true;
+
+      if (isLoggedIn) {
+        showDashboard();
+      }
+    });
+  </script>
+</body>
+</html>
